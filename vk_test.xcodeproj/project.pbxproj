@@ -1,0 +1,334 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2E8D86642070D8E300D7C2AF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E8D86632070D8E300D7C2AF /* main.cpp */; };
+		2E8D866E2070D9EA00D7C2AF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D866D2070D9EA00D7C2AF /* libc++.tbd */; };
+		2E8D86702070DBF600D7C2AF /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D866F2070DBF600D7C2AF /* Metal.framework */; };
+		2E8D86722070DBFC00D7C2AF /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D86712070DBFC00D7C2AF /* IOSurface.framework */; };
+		2E8D86742070DC0100D7C2AF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D86732070DC0100D7C2AF /* QuartzCore.framework */; };
+		2E8D86762070DC0900D7C2AF /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D86752070DC0900D7C2AF /* IOKit.framework */; };
+		2E8D86782070DC1C00D7C2AF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D86772070DC1C00D7C2AF /* Foundation.framework */; };
+		2EB531302072199200E14D8E /* MoltenVK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D866B2070D9D100D7C2AF /* MoltenVK.framework */; };
+		2EB531462073AD8800E14D8E /* vk_memory_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EB531452073AD8800E14D8E /* vk_memory_manager.cpp */; };
+		2EB5314A2073E97000E14D8E /* vk_shader_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EB531482073E97000E14D8E /* vk_shader_manager.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2E8D865E2070D8E200D7C2AF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2E2E7A1B2074B7E20066C039 /* vk_descriptor_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_descriptor_manager.h; sourceTree = "<group>"; };
+		2E2E7A1C20765CDA0066C039 /* vk_pipeline_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_pipeline_manager.h; sourceTree = "<group>"; };
+		2E8D86602070D8E300D7C2AF /* vk_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = vk_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E8D86632070D8E300D7C2AF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		2E8D866B2070D9D100D7C2AF /* MoltenVK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoltenVK.framework; path = ../../../MoltenVK/Package/Release/MoltenVK/macOS/MoltenVK.framework; sourceTree = "<group>"; };
+		2E8D866D2070D9EA00D7C2AF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		2E8D866F2070DBF600D7C2AF /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		2E8D86712070DBFC00D7C2AF /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		2E8D86732070DC0100D7C2AF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2E8D86752070DC0900D7C2AF /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		2E8D86772070DC1C00D7C2AF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2EB5312D2072121600E14D8E /* MoltenVK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoltenVK.framework; path = ../../../MoltenVK/Package/Debug/MoltenVK/macOS/MoltenVK.framework; sourceTree = "<group>"; };
+		2EB531422072241400E14D8E /* vk_memory_allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_memory_allocator.h; sourceTree = "<group>"; };
+		2EB531432073578000E14D8E /* vk_scoped_object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_scoped_object.h; sourceTree = "<group>"; };
+		2EB53144207382AF00E14D8E /* vk_memory_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_memory_manager.h; sourceTree = "<group>"; };
+		2EB531452073AD8800E14D8E /* vk_memory_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vk_memory_manager.cpp; sourceTree = "<group>"; };
+		2EB531472073D39200E14D8E /* vk_shader_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_shader_manager.h; sourceTree = "<group>"; };
+		2EB531482073E97000E14D8E /* vk_shader_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vk_shader_manager.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2E8D865D2070D8E200D7C2AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E8D86782070DC1C00D7C2AF /* Foundation.framework in Frameworks */,
+				2EB531302072199200E14D8E /* MoltenVK.framework in Frameworks */,
+				2E8D86762070DC0900D7C2AF /* IOKit.framework in Frameworks */,
+				2E8D86742070DC0100D7C2AF /* QuartzCore.framework in Frameworks */,
+				2E8D86722070DBFC00D7C2AF /* IOSurface.framework in Frameworks */,
+				2E8D86702070DBF600D7C2AF /* Metal.framework in Frameworks */,
+				2E8D866E2070D9EA00D7C2AF /* libc++.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2E8D86572070D8E200D7C2AF = {
+			isa = PBXGroup;
+			children = (
+				2E8D86622070D8E300D7C2AF /* vk_test */,
+				2E8D86612070D8E300D7C2AF /* Products */,
+				2E8D866A2070D9D100D7C2AF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2E8D86612070D8E300D7C2AF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2E8D86602070D8E300D7C2AF /* vk_test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2E8D86622070D8E300D7C2AF /* vk_test */ = {
+			isa = PBXGroup;
+			children = (
+				2E8D86632070D8E300D7C2AF /* main.cpp */,
+				2EB531422072241400E14D8E /* vk_memory_allocator.h */,
+				2EB531432073578000E14D8E /* vk_scoped_object.h */,
+				2EB53144207382AF00E14D8E /* vk_memory_manager.h */,
+				2EB531452073AD8800E14D8E /* vk_memory_manager.cpp */,
+				2EB531472073D39200E14D8E /* vk_shader_manager.h */,
+				2EB531482073E97000E14D8E /* vk_shader_manager.cpp */,
+				2E2E7A1B2074B7E20066C039 /* vk_descriptor_manager.h */,
+				2E2E7A1C20765CDA0066C039 /* vk_pipeline_manager.h */,
+			);
+			path = vk_test;
+			sourceTree = "<group>";
+		};
+		2E8D866A2070D9D100D7C2AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2EB5312D2072121600E14D8E /* MoltenVK.framework */,
+				2E8D86772070DC1C00D7C2AF /* Foundation.framework */,
+				2E8D86752070DC0900D7C2AF /* IOKit.framework */,
+				2E8D86732070DC0100D7C2AF /* QuartzCore.framework */,
+				2E8D86712070DBFC00D7C2AF /* IOSurface.framework */,
+				2E8D866F2070DBF600D7C2AF /* Metal.framework */,
+				2E8D866D2070D9EA00D7C2AF /* libc++.tbd */,
+				2E8D866B2070D9D100D7C2AF /* MoltenVK.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2E8D865F2070D8E200D7C2AF /* vk_test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2E8D86672070D8E300D7C2AF /* Build configuration list for PBXNativeTarget "vk_test" */;
+			buildPhases = (
+				2E8D865C2070D8E200D7C2AF /* Sources */,
+				2E8D865D2070D8E200D7C2AF /* Frameworks */,
+				2E8D865E2070D8E200D7C2AF /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = vk_test;
+			productName = vk_test;
+			productReference = 2E8D86602070D8E300D7C2AF /* vk_test */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2E8D86582070D8E200D7C2AF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Dmitry Kozlov";
+				TargetAttributes = {
+					2E8D865F2070D8E200D7C2AF = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2E8D865B2070D8E200D7C2AF /* Build configuration list for PBXProject "vk_test" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2E8D86572070D8E200D7C2AF;
+			productRefGroup = 2E8D86612070D8E300D7C2AF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2E8D865F2070D8E200D7C2AF /* vk_test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2E8D865C2070D8E200D7C2AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E8D86642070D8E300D7C2AF /* main.cpp in Sources */,
+				2EB5314A2073E97000E14D8E /* vk_shader_manager.cpp in Sources */,
+				2EB531462073AD8800E14D8E /* vk_memory_manager.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2E8D86652070D8E300D7C2AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2E8D86662070D8E300D7C2AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2E8D86682070D8E300D7C2AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = "/Users/yozhijk/Documents/dev/MoltenVK/MoltenVK/macOS/**";
+				HEADER_SEARCH_PATHS = "/Users/yozhijk/Documents/dev/MoltenVK/MoltenVK/include/**";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2E8D86692070D8E300D7C2AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = "/Users/yozhijk/Documents/dev/MoltenVK/MoltenVK/macOS/**";
+				HEADER_SEARCH_PATHS = "/Users/yozhijk/Documents/dev/MoltenVK/MoltenVK/include/**";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2E8D865B2070D8E200D7C2AF /* Build configuration list for PBXProject "vk_test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E8D86652070D8E300D7C2AF /* Debug */,
+				2E8D86662070D8E300D7C2AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2E8D86672070D8E300D7C2AF /* Build configuration list for PBXNativeTarget "vk_test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E8D86682070D8E300D7C2AF /* Debug */,
+				2E8D86692070D8E300D7C2AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2E8D86582070D8E200D7C2AF /* Project object */;
+}
