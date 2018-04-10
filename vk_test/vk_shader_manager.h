@@ -61,11 +61,11 @@ namespace vkw
         bool dirty = true;
     };
     
-    class VkShaderManager
+    class ShaderManager
     {
     public:
-        VkShaderManager(VkDevice device,
-                        VkDescriptorManager& descriptor_manager)
+        ShaderManager(VkDevice device,
+                      DescriptorManager& descriptor_manager)
         : device_(device)
         , descriptor_manager_(descriptor_manager)
         {
@@ -90,6 +90,6 @@ namespace vkw
                                      std::vector<VkDescriptorSetLayoutBinding>& bindings);
         
         VkDevice device_;
-        VkDescriptorManager& descriptor_manager_;
+        DescriptorManager& descriptor_manager_;
     };
 }

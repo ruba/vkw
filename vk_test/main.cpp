@@ -12,6 +12,8 @@
 #include "vk_shader_manager.h"
 #include "vk_descriptor_manager.h"
 #include "vk_pipeline_manager.h"
+#include "vk_command_buffer_builder.h"
+#include "vk_execution_manager.h"
 
 using namespace vkw;
 
@@ -134,29 +136,6 @@ VkScopedObject<VkDevice> create_device(VkInstance instance,
                                     });
 }
 
-VkScopedObject<VkCommandPool> create_command_pool(VkDevice device, std::uint32_t queue_family_index)
-{
-    VkCommandPoolCreateInfo pool_create_info;
-    pool_create_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    pool_create_info.pNext = nullptr;
-    pool_create_info.flags = 0;
-    pool_create_info.queueFamilyIndex = queue_family_index;
-    
-    VkCommandPool command_pool = nullptr;
-    auto res = vkCreateCommandPool(device, &pool_create_info, nullptr, &command_pool);
-    
-    if (res != VK_SUCCESS)
-    {
-        throw std::runtime_error("Failed to create command pool\n");
-    }
-    
-    return VkScopedObject<VkCommandPool>(command_pool,
-                                         [device](VkCommandPool pool)
-                                         {
-                                             vkDestroyCommandPool(device, pool, nullptr);
-                                         });
-}
-
 
 int main(int argc, const char * argv[])
 {
@@ -166,19 +145,19 @@ int main(int argc, const char * argv[])
     std::uint32_t queue_family_index = 0u;
     auto device = create_device(instance, queue_family_index, &physical_device);
     
-    VkMemoryAllocator allocator(device, physical_device);
-    VkMemoryManager memory_manager(device, queue_family_index, allocator);
-    VkDescriptorManager descriptor_manager(device);
-    VkShaderManager shader_manager(device, descriptor_manager);
+    MemoryAllocator allocator(device, physical_device);
+    MemoryManager memory_manager(device, queue_family_index, allocator);
+    DescriptorManager descriptor_manager(device);
+    ShaderManager shader_manager(device, descriptor_manager);
     PipelineManager pipeline_manager(device);
-    
-    auto command_pool = create_command_pool(device, queue_family_index);
+    CommandBufferBuilder command_buffer_builder(device, queue_family_index);
+    ExecutionManager exec_manager(device, queue_family_index);
     
     VkScopedArray<VkDescriptorSetLayout> layouts;
     std::vector<VkPushConstantRange> push_constant_ranges;
     auto shader = shader_manager.CreateComputeShader("add.comp.spv");
-    
     auto pipeline = pipeline_manager.CreateComputePipeline(shader);
+    
     
     std::vector<int> fake_data{1, 2, 3, 4, 5};
     auto buffer_a = memory_manager.CreateBuffer(fake_data.size() * sizeof(int),
@@ -199,7 +178,6 @@ int main(int argc, const char * argv[])
     shader.SetArg(0u, buffer_a);
     shader.SetArg(1u, buffer_b);
     shader.SetArg(2u, buffer_c);
-    shader.CommitArgs();
 
     auto buffer = memory_manager.CreateBuffer(fake_data.size() * sizeof(int),
                                               VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
@@ -216,95 +194,23 @@ int main(int argc, const char * argv[])
     memory_manager.ReadBuffer(buffer, 0u, new_data.size() * sizeof(int), data.data());
     
     
-    VkCommandBufferAllocateInfo command_buffer_alloc_info;
-    command_buffer_alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    command_buffer_alloc_info.pNext = nullptr;
-    command_buffer_alloc_info.commandPool = command_pool;
-    command_buffer_alloc_info.commandBufferCount = 1u;
-    command_buffer_alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    command_buffer_builder.BeginCommandBuffer();
+    command_buffer_builder.Dispatch(pipeline, shader, 1u, 1u, 1u);
+    command_buffer_builder.Barrier(buffer_c,
+                                   VK_ACCESS_SHADER_WRITE_BIT,
+                                   VK_ACCESS_HOST_READ_BIT,
+                                   VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                                   VK_PIPELINE_STAGE_TRANSFER_BIT);
+
     
-    VkCommandBuffer command_buffer = nullptr;
-    vkAllocateCommandBuffers(device, &command_buffer_alloc_info, &command_buffer);
-    
-    VkCommandBufferBeginInfo begin_info;
-    begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    begin_info.pNext = nullptr;
-    begin_info.pInheritanceInfo = nullptr;
-    begin_info.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
-    
-    vkBeginCommandBuffer(command_buffer, &begin_info);
-    
-    vkCmdBindPipeline(command_buffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline.pipeline);
-    vkCmdBindDescriptorSets(command_buffer,
-                            VK_PIPELINE_BIND_POINT_COMPUTE,
-                            pipeline.layout,
-                            0,
-                            (std::uint32_t)shader.descriptor_sets.size(),
-                            shader.descriptor_sets.data(), 0u,
-                            nullptr);
-    
-    std::uint32_t size = (std::uint32_t)data.size();
-    vkCmdPushConstants(command_buffer,
-                       pipeline.layout,
-                       VK_SHADER_STAGE_COMPUTE_BIT,
-                       0,
-                       sizeof(std::uint32_t),
-                       &size);
-    
-    vkCmdDispatch(command_buffer, 1u, 1u, 1u);
-    
-    VkBufferMemoryBarrier barrier;
-    barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
-    barrier.pNext = nullptr;
-    barrier.buffer = buffer_c;
-    barrier.offset = 0u;
-    barrier.size = VK_WHOLE_SIZE;
-    barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-    barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-    barrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT;
-    barrier.dstAccessMask = VK_ACCESS_HOST_READ_BIT;
-    
-    vkCmdPipelineBarrier(command_buffer,
-                         VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-                         VK_PIPELINE_STAGE_HOST_BIT,
-                         0u,
-                         0u,
-                         nullptr,
-                         1u,
-                         &barrier,
-                         0u,
-                         nullptr);
-    
-    vkEndCommandBuffer(command_buffer);
-    
-    VkSubmitInfo submit_info;
-    submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submit_info.pNext = nullptr;
-    submit_info.commandBufferCount = 1u;
-    submit_info.pCommandBuffers = &command_buffer;
-    submit_info.pSignalSemaphores = nullptr;
-    submit_info.signalSemaphoreCount = 0u;
-    submit_info.pWaitSemaphores = nullptr;
-    submit_info.waitSemaphoreCount = 0u;
-    submit_info.pWaitDstStageMask = nullptr;
-    
-    VkQueue queue = nullptr;
-    vkGetDeviceQueue(device, queue_family_index, 0u, &queue);
-    
-    vkQueueSubmit(queue, 1u, &submit_info, VK_NULL_HANDLE);
-    vkQueueWaitIdle(queue);
+    auto command_buffer = command_buffer_builder.EndCommandBuffer();
+    exec_manager.Submit(command_buffer);
+    exec_manager.WaitIdle();
     
     std::vector<int> result(5);
     memory_manager.ReadBuffer(buffer_c, 0u, 5 * sizeof(int), result.data());
     
-    std::cout << result[0];
-    
-    // cmdbuffer_manager.BeginCommandBuffer();
-    // cmdbuffer_manager.BindPipeline(pipeline);
-    // shader->SetArg(0u, buffer_a);
-    // shader->SetArg(1u, buffer_b);
-    // shader->SetArg(2u, buffer_c);
-    // cmdbuffer_manager.Dispatch(shader, grid_res);
+    std::cout << result[0] << "\n";
     
     return 0;
 }

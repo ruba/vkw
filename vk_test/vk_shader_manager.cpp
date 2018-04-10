@@ -6,7 +6,7 @@
 
 namespace vkw
 {
-    std::uint32_t VkShaderManager::GetNumDescriptorSets(spirv_cross::CompilerGLSL& glsl)
+    std::uint32_t ShaderManager::GetNumDescriptorSets(spirv_cross::CompilerGLSL& glsl)
     {
         // The SPIR-V is now parsed, and we can perform reflection on it.
         spirv_cross::ShaderResources resources = glsl.get_shader_resources();
@@ -52,10 +52,10 @@ namespace vkw
         return num_sets;
     }
     
-    void VkShaderManager::PopulateBindings(spirv_cross::CompilerGLSL& glsl,
-                                           int set_id,
-                                           VkShaderStageFlags stage_flags,
-                                           std::vector<VkDescriptorSetLayoutBinding>& bindings)
+    void ShaderManager::PopulateBindings(spirv_cross::CompilerGLSL& glsl,
+                                         int set_id,
+                                         VkShaderStageFlags stage_flags,
+                                         std::vector<VkDescriptorSetLayoutBinding>& bindings)
     {
         // The SPIR-V is now parsed, and we can perform reflection on it.
         spirv_cross::ShaderResources resources = glsl.get_shader_resources();
@@ -158,9 +158,9 @@ namespace vkw
     }
     
     void
-    VkShaderManager::CreateShaderModule(VkShaderStageFlags binding_stage_flags,
-                                        std::vector<std::uint32_t> const& bytecode,
-                                        Shader& shader)
+    ShaderManager::CreateShaderModule(VkShaderStageFlags binding_stage_flags,
+                                      std::vector<std::uint32_t> const& bytecode,
+                                      Shader& shader)
     {
         spirv_cross::CompilerGLSL glsl(bytecode);
         
@@ -258,7 +258,7 @@ namespace vkw
     }
     
     void
-    VkShaderManager::CreateShaderModule(VkShaderStageFlags binding_stage_flags,
+    ShaderManager::CreateShaderModule(VkShaderStageFlags binding_stage_flags,
                                         std::string file_name,
                                         Shader& shader)
     {
@@ -282,7 +282,7 @@ namespace vkw
         return CreateShaderModule(binding_stage_flags, code, shader);
     }
     
-    Shader VkShaderManager::CreateComputeShader(std::string file_name)
+    Shader ShaderManager::CreateComputeShader(std::string file_name)
     {
         Shader shader;
         
@@ -293,7 +293,7 @@ namespace vkw
         return shader;
     }
     
-    Shader VkShaderManager::CreateComputeShader(std::vector<std::uint32_t> const& bytecode)
+    Shader ShaderManager::CreateComputeShader(std::vector<std::uint32_t> const& bytecode)
     {
         Shader shader;
         

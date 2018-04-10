@@ -28,12 +28,12 @@
 
 namespace vkw
 {
-    class VkMemoryManager
+    class MemoryManager
     {
     public:
-        VkMemoryManager(VkDevice device,
+        MemoryManager(VkDevice device,
                         std::uint32_t queue_family_index,
-                        VkMemoryAllocator& allocator);
+                        MemoryAllocator& allocator);
         
         VkScopedObject<VkBuffer> CreateBuffer(VkDeviceSize size,
                                               VkMemoryPropertyFlags memory_type,
@@ -55,18 +55,18 @@ namespace vkw
         
     private:
         static void CopyToHostVisibleBlock(VkDevice device,
-                                           VkMemoryAllocator::StorageBlock const& block,
+                                           MemoryAllocator::StorageBlock const& block,
                                            VkDeviceSize size,
                                            void const* data);
         
         static void CopyFromHostVisibleBlock(VkDevice device,
-                                             VkMemoryAllocator::StorageBlock const& block,
+                                             MemoryAllocator::StorageBlock const& block,
                                              VkDeviceSize size,
                                              void* data);
         
         void GetStagingBufferAndBlock(VkDeviceSize size,
                                       VkBuffer& buffer,
-                                      VkMemoryAllocator::StorageBlock& block);
+                                      MemoryAllocator::StorageBlock& block);
         
         void CopyBuffer(VkDevice device,
                         VkBuffer src_buffer,
@@ -76,11 +76,11 @@ namespace vkw
                         VkDeviceSize size);
         
         VkDevice device_;
-        VkMemoryAllocator& allocator_;
+        MemoryAllocator& allocator_;
         std::uint32_t queue_family_index_;
         VkScopedObject<VkCommandPool> command_pool_;
         
-        std::unordered_map<VkBuffer, VkMemoryAllocator::StorageBlock> buffer_bindings_;
+        std::unordered_map<VkBuffer, MemoryAllocator::StorageBlock> buffer_bindings_;
         std::list<VkScopedObject<VkBuffer>> staging_buffer_pool_;
     };
 }

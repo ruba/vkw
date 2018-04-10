@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E2E7A1F2077C4D70066C039 /* vk_command_buffer_builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E2E7A1E2077C4D70066C039 /* vk_command_buffer_builder.cpp */; };
 		2E8D86642070D8E300D7C2AF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E8D86632070D8E300D7C2AF /* main.cpp */; };
 		2E8D866E2070D9EA00D7C2AF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D866D2070D9EA00D7C2AF /* libc++.tbd */; };
 		2E8D86702070DBF600D7C2AF /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8D866F2070DBF600D7C2AF /* Metal.framework */; };
@@ -32,8 +33,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E2B3544207CD7C5005A44FE /* vk_execution_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_execution_manager.h; sourceTree = "<group>"; };
 		2E2E7A1B2074B7E20066C039 /* vk_descriptor_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_descriptor_manager.h; sourceTree = "<group>"; };
 		2E2E7A1C20765CDA0066C039 /* vk_pipeline_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_pipeline_manager.h; sourceTree = "<group>"; };
+		2E2E7A1D2077C0050066C039 /* vk_command_buffer_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vk_command_buffer_builder.h; sourceTree = "<group>"; };
+		2E2E7A1E2077C4D70066C039 /* vk_command_buffer_builder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vk_command_buffer_builder.cpp; sourceTree = "<group>"; };
 		2E8D86602070D8E300D7C2AF /* vk_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = vk_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E8D86632070D8E300D7C2AF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		2E8D866B2070D9D100D7C2AF /* MoltenVK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoltenVK.framework; path = ../../../MoltenVK/Package/Release/MoltenVK/macOS/MoltenVK.framework; sourceTree = "<group>"; };
@@ -99,6 +103,9 @@
 				2EB531482073E97000E14D8E /* vk_shader_manager.cpp */,
 				2E2E7A1B2074B7E20066C039 /* vk_descriptor_manager.h */,
 				2E2E7A1C20765CDA0066C039 /* vk_pipeline_manager.h */,
+				2E2E7A1D2077C0050066C039 /* vk_command_buffer_builder.h */,
+				2E2E7A1E2077C4D70066C039 /* vk_command_buffer_builder.cpp */,
+				2E2B3544207CD7C5005A44FE /* vk_execution_manager.h */,
 			);
 			path = vk_test;
 			sourceTree = "<group>";
@@ -175,6 +182,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E2E7A1F2077C4D70066C039 /* vk_command_buffer_builder.cpp in Sources */,
 				2E8D86642070D8E300D7C2AF /* main.cpp in Sources */,
 				2EB5314A2073E97000E14D8E /* vk_shader_manager.cpp in Sources */,
 				2EB531462073AD8800E14D8E /* vk_memory_manager.cpp in Sources */,

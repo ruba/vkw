@@ -27,15 +27,13 @@
 
 namespace vkw
 {
-    struct VkResourceHolder;
-    
-    class VkDescriptorManager
+    class DescriptorManager
     {
     public:
         static auto constexpr kMaxSets = 512u;
         static auto constexpr kNumDescriptors = 256u;
         
-        VkDescriptorManager(VkDevice device)
+        DescriptorManager(VkDevice device)
         : device_(device)
         {
             VkDescriptorPoolSize pool_sizes[] =

@@ -29,7 +29,7 @@
 
 namespace vkw
 {
-    struct Pipeline
+    struct ComputePipeline
     {
         VkScopedObject<VkPipeline> pipeline;
         VkScopedObject<VkPipelineLayout> layout;
@@ -43,9 +43,9 @@ namespace vkw
         {
         }
         
-        Pipeline CreateComputePipeline(Shader& shader)
+        ComputePipeline CreateComputePipeline(Shader& shader)
         {
-            Pipeline pipeline;
+            ComputePipeline pipeline;
             
             VkPipelineLayoutCreateInfo layout_create_info;
             layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
