@@ -39,8 +39,8 @@ namespace vkw
         void ClearDirty() { dirty = false; }
         
         VkScopedObject<VkShaderModule> module;
-        VkScopedArray<VkDescriptorSetLayout> layouts;
-        VkScopedArray<VkDescriptorSet> descriptor_sets;
+        VkScopedObject<VkDescriptorSetLayout> layout;
+        VkScopedObject<VkDescriptorSet> descriptor_set;
         std::vector<VkPushConstantRange> push_constant_ranges;
         
         struct Binding

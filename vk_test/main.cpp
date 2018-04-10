@@ -153,8 +153,6 @@ int main(int argc, const char * argv[])
     CommandBufferBuilder command_buffer_builder(device, queue_family_index);
     ExecutionManager exec_manager(device, queue_family_index);
     
-    VkScopedArray<VkDescriptorSetLayout> layouts;
-    std::vector<VkPushConstantRange> push_constant_ranges;
     auto shader = shader_manager.CreateComputeShader("add.comp.spv");
     auto pipeline = pipeline_manager.CreateComputePipeline(shader);
     
@@ -189,8 +187,6 @@ int main(int argc, const char * argv[])
     
     std::vector<int> new_data{5, 4, 3, 2, 1};
     memory_manager.WriteBuffer(buffer, 0u, new_data.size() * sizeof(int), new_data.data());
-    
-    
     memory_manager.ReadBuffer(buffer, 0u, new_data.size() * sizeof(int), data.data());
     
     
@@ -210,7 +206,12 @@ int main(int argc, const char * argv[])
     std::vector<int> result(5);
     memory_manager.ReadBuffer(buffer_c, 0u, 5 * sizeof(int), result.data());
     
-    std::cout << result[0] << "\n";
+    for(auto& v : result)
+    {
+        std::cout << v << " ";
+    }
+    
+    std::cout << "\n";
     
     return 0;
 }

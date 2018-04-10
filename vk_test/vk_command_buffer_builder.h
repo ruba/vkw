@@ -36,9 +36,12 @@ namespace vkw
         
         void Dispatch(ComputePipeline& pipeline,
                       Shader& shader,
-                      std::uint32_t num_groups_x,
-                      std::uint32_t num_groups_y,
-                      std::uint32_t num_groups_z);
+                      std::uint32_t group_size_x,
+                      std::uint32_t group_size_y,
+                      std::uint32_t group_size_z);
+                      //std::uint32_t num_groups_x,
+                      //std::uint32_t num_groups_y,
+                      //std::uint32_t num_groups_z);
         
         void Barrier(VkBuffer buffer,
                      VkAccessFlags src_access,

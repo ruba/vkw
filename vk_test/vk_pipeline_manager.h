@@ -51,8 +51,8 @@ namespace vkw
             layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
             layout_create_info.pNext = nullptr;
             layout_create_info.flags = 0;
-            layout_create_info.setLayoutCount = (std::uint32_t)shader.layouts.size();
-            layout_create_info.pSetLayouts = shader.layouts.data();
+            layout_create_info.setLayoutCount = 1u;
+            layout_create_info.pSetLayouts = shader.layout.GetObjectPtr();
             layout_create_info.pushConstantRangeCount = (std::uint32_t)shader.push_constant_ranges.size();
             layout_create_info.pPushConstantRanges = shader.push_constant_ranges.data();
             

@@ -69,8 +69,8 @@ namespace vkw
                                 VK_PIPELINE_BIND_POINT_COMPUTE,
                                 pipeline.layout,
                                 0,
-                                (std::uint32_t)shader.descriptor_sets.size(),
-                                shader.descriptor_sets.data(), 0u,
+                                1u,
+                                shader.descriptor_set.GetObjectPtr(), 0u,
                                 nullptr);
         
           vkCmdDispatch(current_command_buffer_, num_groups_x, num_groups_y, num_groups_z);

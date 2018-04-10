@@ -171,7 +171,7 @@ namespace vkw
             throw std::runtime_error("VkShaderManager: only one descriptor set is currently supported per shader");
         }
         
-        std::vector<VkDescriptorSetLayout> raw_layouts(num_descriptor_sets);
+        VkDescriptorSetLayout raw_layout = nullptr;
         
         for (auto i = 0; i < num_descriptor_sets; ++i)
         {
@@ -185,7 +185,7 @@ namespace vkw
             layout_create_info.bindingCount = (std::uint32_t)bindings.size();
             layout_create_info.pBindings = bindings.data();
             
-            vkCreateDescriptorSetLayout(device_, &layout_create_info, nullptr, &raw_layouts[i]);
+            vkCreateDescriptorSetLayout(device_, &layout_create_info, nullptr, &raw_layout);
             
             shader.bindings.clear();
             for (auto& b: bindings)
@@ -202,16 +202,13 @@ namespace vkw
             shader.device = device_;
         }
         
-        shader.layouts = VkScopedArray<VkDescriptorSetLayout>(raw_layouts.data(),
-                                                              (std::uint32_t)raw_layouts.size(),
-                                                              [this](VkDescriptorSetLayout* layout, std::uint32_t size)
+        shader.layout = VkScopedObject<VkDescriptorSetLayout>(raw_layout,
+                                                              [this](VkDescriptorSetLayout layout)
                                                               {
-                                                                  for (auto i = 0; i < size; ++i)
-                                                                  {
                                                                       vkDestroyDescriptorSetLayout(device_,
-                                                                                                   layout[i],
+                                                                                                   layout,
                                                                                                    nullptr);
-                                                                  }
+                                                                  
                                                               });
         
         spirv_cross::ShaderResources resources = glsl.get_shader_resources();
@@ -288,7 +285,7 @@ namespace vkw
         
         CreateShaderModule(VK_SHADER_STAGE_COMPUTE_BIT, file_name, shader);
         
-        shader.descriptor_sets = descriptor_manager_.AllocateDescriptorSets(shader.layouts);
+        shader.descriptor_set = descriptor_manager_.AllocateDescriptorSet(shader.layout);
         
         return shader;
     }
@@ -299,7 +296,7 @@ namespace vkw
         
         CreateShaderModule(VK_SHADER_STAGE_COMPUTE_BIT, bytecode, shader);
         
-        shader.descriptor_sets = descriptor_manager_.AllocateDescriptorSets(shader.layouts);
+        shader.descriptor_set = descriptor_manager_.AllocateDescriptorSet(shader.layout);
         
         return shader;
     }
@@ -400,7 +397,7 @@ namespace vkw
                 write_descriptor_set.descriptorType = b.second.type;
                 write_descriptor_set.dstBinding = b.first;
                 write_descriptor_set.dstArrayElement = 0;
-                write_descriptor_set.dstSet = descriptor_sets[0];
+                write_descriptor_set.dstSet = descriptor_set;
                 write_descriptor_set.pBufferInfo = &buffers.back();
                 write_descriptor_set.pImageInfo = nullptr;
                 write_descriptor_set.pTexelBufferView = nullptr;

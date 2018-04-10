@@ -69,29 +69,27 @@ namespace vkw
                                                      });
         }
         
-        auto AllocateDescriptorSets(std::vector<VkDescriptorSetLayout> const& layouts)
+        auto AllocateDescriptorSet(VkDescriptorSetLayout layout)
         {
-            std::vector<VkDescriptorSet> descriptor_sets(layouts.size());
-            
             VkDescriptorSetAllocateInfo allocate_info;
             allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
             allocate_info.pNext = nullptr;
             allocate_info.descriptorPool = pool_;
-            allocate_info.descriptorSetCount = (std::uint32_t)layouts.size();
-            allocate_info.pSetLayouts = layouts.data();
+            allocate_info.descriptorSetCount = 1u;
+            allocate_info.pSetLayouts = &layout;
             
-            auto res = vkAllocateDescriptorSets(device_, &allocate_info, descriptor_sets.data());
+            VkDescriptorSet descriptor_set = nullptr;
+            auto res = vkAllocateDescriptorSets(device_, &allocate_info, &descriptor_set);
             
             if (res != VK_SUCCESS)
             {
                 throw std::runtime_error("VkDescriptorManager: Cannot allocate descriptors");
             }
             
-            return VkScopedArray<VkDescriptorSet>(descriptor_sets.data(),
-                                                  (std::uint32_t)descriptor_sets.size(),
-                                                  [this](VkDescriptorSet* desctiptor_set, std::uint32_t size)
+            return VkScopedObject<VkDescriptorSet>(descriptor_set,
+                                                  [this](VkDescriptorSet desctiptor_set)
                                                   {
-                                                      vkFreeDescriptorSets(device_, pool_, size, desctiptor_set);
+                                                      vkFreeDescriptorSets(device_, pool_, 1u, &desctiptor_set);
                                                   });
         }
         
