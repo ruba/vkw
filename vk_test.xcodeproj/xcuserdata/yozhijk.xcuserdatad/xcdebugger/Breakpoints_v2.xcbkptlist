@@ -6,11 +6,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../MoltenVK/MoltenVK/MoltenVK/GPUObjects/MVKShaderModule.mm"
-            timestampString = "544545569.315101"
+            timestampString = "545077165.5142241"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"
@@ -26,12 +26,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "vk_test/vk_shader_manager.cpp"
-            timestampString = "545065384.750416"
+            timestampString = "545078256.821363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "325"
             endingLineNumber = "325"
             landmarkName = "Shader::SetArg(std::uint32_t idx, VkBuffer buffer)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../MoltenVK/MoltenVK/MoltenVK/GPUObjects/MVKShaderModule.mm"
+            timestampString = "545077165.514576"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "MVKShaderLibrary::getMTLFunction(const VkSpecializationInfo* pSpecializationInfo)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -154,7 +154,7 @@ int main(int argc, const char * argv[])
     ExecutionManager exec_manager(device, queue_family_index);
     
     auto shader = shader_manager.CreateComputeShader("add.comp.spv");
-    auto pipeline = pipeline_manager.CreateComputePipeline(shader);
+    auto pipeline = pipeline_manager.CreateComputePipeline(shader, 64u, 1u, 1u);
     
     
     std::vector<int> fake_data{1, 2, 3, 4, 5};
