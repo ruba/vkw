@@ -58,7 +58,7 @@ namespace vkw
     class RenderTargetManager
     {
     public:
-        RenderTargetManager(VkDevice device, VkMemoryManager& memory_manager)
+        RenderTargetManager(VkDevice device, MemoryManager& memory_manager)
         : device_(device)
         , memory_manager_(memory_manager)
         {
@@ -82,7 +82,7 @@ namespace vkw
                                                     VkImageUsageFlags usage);
         
     private:
-        VkMemoryManager& memory_manager_;
+        MemoryManager& memory_manager_;
         VkDevice device_;
     };
 }

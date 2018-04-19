@@ -30,7 +30,7 @@ namespace vkw
     // VkMemoryAllocator manages device memory allocation.
     // Different memory type might be requested, allocator
     // manages separates pool for those.
-    struct VkMemoryAllocator
+    struct MemoryAllocator
     {
         static std::size_t constexpr kChunkSize = 256 * 1024 * 1024;
         static std::size_t align(std::size_t value, std::size_t alignment)
@@ -62,7 +62,7 @@ namespace vkw
         };
         
         // Ctor
-        VkMemoryAllocator(VkDevice device, VkPhysicalDevice physical_device)
+        MemoryAllocator(VkDevice device, VkPhysicalDevice physical_device)
         : device_(device)
         , physical_device_(physical_device)
         {
@@ -70,7 +70,7 @@ namespace vkw
         }
         
         // Dtor
-        ~VkMemoryAllocator()
+        ~MemoryAllocator()
         {
             ReleaseMemory();
         }
@@ -132,10 +132,10 @@ namespace vkw
     };
     
     inline
-    VkMemoryAllocator::StorageBlock VkMemoryAllocator::allocate(VkMemoryPropertyFlags type,
-                                                                //VkBufferUsageFlags usage,
-                                                                std::size_t size,
-                                                                std::size_t alignment)
+    MemoryAllocator::StorageBlock MemoryAllocator::allocate(VkMemoryPropertyFlags type,
+                                                              //VkBufferUsageFlags usage,
+                                                              std::size_t size,
+                                                              std::size_t alignment)
     {
         // Try to find existing header for a given memory type flags
         auto memory_type_index = FindMemoryTypeIndex(type);
@@ -235,7 +235,7 @@ namespace vkw
         return free_block;
     }
     
-    inline void VkMemoryAllocator::deallocate(StorageBlock const& block)
+    inline void MemoryAllocator::deallocate(StorageBlock const& block)
     {
         if (block.size == 0)
         {

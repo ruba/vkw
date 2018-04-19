@@ -2,8 +2,8 @@
 
 namespace vkw
 {
-    void VkMemoryManager::CopyToHostVisibleBlock(VkDevice device,
-                                                 VkMemoryAllocator::StorageBlock const& storage_block,
+    void MemoryManager::CopyToHostVisibleBlock(VkDevice device,
+                                                 MemoryAllocator::StorageBlock const& storage_block,
                                                  VkDeviceSize size,
                                                  void const* data)
     {
@@ -33,8 +33,8 @@ namespace vkw
         vkUnmapMemory(device, storage_block.memory);
     }
     
-    void VkMemoryManager::CopyFromHostVisibleBlock(VkDevice device,
-                                                   VkMemoryAllocator::StorageBlock const& storage_block,
+    void MemoryManager::CopyFromHostVisibleBlock(VkDevice device,
+                                                   MemoryAllocator::StorageBlock const& storage_block,
                                                    VkDeviceSize size,
                                                    void* data)
     {
@@ -65,7 +65,7 @@ namespace vkw
         vkUnmapMemory(device, storage_block.memory);
     }
     
-    void VkMemoryManager::ReadBuffer(VkBuffer buffer, VkDeviceSize offset, VkDeviceSize size, void* data)
+    void MemoryManager::ReadBuffer(VkBuffer buffer, VkDeviceSize offset, VkDeviceSize size, void* data)
     {
         auto iter = buffer_bindings_.find(buffer);
         
@@ -78,7 +78,7 @@ namespace vkw
             else
             {
                 VkBuffer staging_buffer = nullptr;
-                VkMemoryAllocator::StorageBlock staging_block;
+                MemoryAllocator::StorageBlock staging_block;
                 GetStagingBufferAndBlock(size, staging_buffer, staging_block);
                 
                 CopyBuffer(device_, buffer, staging_buffer, offset, 0u, size);
@@ -92,7 +92,7 @@ namespace vkw
         }
     }
     
-    void VkMemoryManager::WriteBuffer(VkBuffer buffer,
+    void MemoryManager::WriteBuffer(VkBuffer buffer,
                                       VkDeviceSize offset,
                                       VkDeviceSize size,
                                       void const* data)
@@ -108,7 +108,7 @@ namespace vkw
             else
             {
                 VkBuffer staging_buffer = nullptr;
-                VkMemoryAllocator::StorageBlock staging_block;
+                MemoryAllocator::StorageBlock staging_block;
                 GetStagingBufferAndBlock(size, staging_buffer, staging_block);
                 
                 CopyToHostVisibleBlock(device_, staging_block, size, data);
@@ -122,9 +122,9 @@ namespace vkw
         }
     }
     
-    VkMemoryManager::VkMemoryManager(VkDevice device,
+    MemoryManager::MemoryManager(VkDevice device,
                                      std::uint32_t queue_family_index,
-                                     VkMemoryAllocator& allocator)
+                                     MemoryAllocator& allocator)
     : device_(device)
     , allocator_(allocator)
     , queue_family_index_(queue_family_index)
@@ -146,7 +146,7 @@ namespace vkw
                                                       });
     }
     
-    void VkMemoryManager::CopyBuffer(VkDevice device,
+    void MemoryManager::CopyBuffer(VkDevice device,
                                      VkBuffer src_buffer,
                                      VkBuffer dst_buffer,
                                      VkDeviceSize src_offset,
@@ -197,7 +197,7 @@ namespace vkw
         vkQueueWaitIdle(queue);
     }
     
-    VkScopedObject<VkBuffer> VkMemoryManager::CreateBuffer(VkDeviceSize size,
+    VkScopedObject<VkBuffer> MemoryManager::CreateBuffer(VkDeviceSize size,
                                                            VkMemoryPropertyFlags memory_type,
                                                            VkBufferUsageFlags usage,
                                                            void* init_data)
@@ -266,7 +266,7 @@ namespace vkw
             else
             {
                 VkBuffer staging_buffer = nullptr;
-                VkMemoryAllocator::StorageBlock staging_block;
+                MemoryAllocator::StorageBlock staging_block;
                 GetStagingBufferAndBlock(size, staging_buffer, staging_block);
                 
                 CopyToHostVisibleBlock(device_, staging_block, size, init_data);
@@ -278,7 +278,7 @@ namespace vkw
         return VkScopedObject<VkBuffer>(buffer, deleter);
     }
     
-    VkScopedObject<VkImage> VkMemoryManager::CreateImage(VkExtent3D size,
+    VkScopedObject<VkImage> MemoryManager::CreateImage(VkExtent3D size,
                                                          VkFormat format,
                                                          VkImageUsageFlags usage)
     {
@@ -342,9 +342,9 @@ namespace vkw
         return VkScopedObject<VkImage>(image, deleter);
     }
     
-    void VkMemoryManager::GetStagingBufferAndBlock(VkDeviceSize size,
-                                                   VkBuffer& buffer,
-                                                   VkMemoryAllocator::StorageBlock& block)
+    void MemoryManager::GetStagingBufferAndBlock(VkDeviceSize size,
+                                                 VkBuffer& buffer,
+                                                 MemoryAllocator::StorageBlock& block)
     {
         auto iter = std::find_if(staging_buffer_pool_.begin(),
                                  staging_buffer_pool_.end(),

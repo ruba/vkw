@@ -39,8 +39,9 @@ namespace vkw
         void ClearDirty() { dirty = false; }
         
         VkScopedObject<VkShaderModule> module;
-        VkScopedArray<VkDescriptorSetLayout> layouts;
-        VkScopedArray<VkDescriptorSet> descriptor_sets;
+        VkScopedObject<VkDescriptorSetLayout> layout;
+        VkScopedObject<VkDescriptorSet> descriptor_set;
+        
         std::vector<VkVertexInputAttributeDescription> vertex_attributes;
         std::vector<VkPushConstantRange> push_constant_ranges;
         
@@ -62,11 +63,11 @@ namespace vkw
         bool dirty = true;
     };
     
-    class VkShaderManager
+    class ShaderManager
     {
     public:
-        VkShaderManager(VkDevice device,
-                        VkDescriptorManager& descriptor_manager)
+        ShaderManager(VkDevice device,
+                      DescriptorManager& descriptor_manager)
         : device_(device)
         , descriptor_manager_(descriptor_manager)
         {
@@ -93,6 +94,6 @@ namespace vkw
         static VkFormat BaseTypeToVkFormat(spirv_cross::SPIRType type);
         
         VkDevice device_;
-        VkDescriptorManager& descriptor_manager_;
+        DescriptorManager& descriptor_manager_;
     };
 }

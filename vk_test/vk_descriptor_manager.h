@@ -27,75 +27,15 @@
 
 namespace vkw
 {
-    struct VkResourceHolder;
-    
-    class VkDescriptorManager
+    class DescriptorManager
     {
     public:
         static auto constexpr kMaxSets = 512u;
         static auto constexpr kNumDescriptors = 256u;
         
-        VkDescriptorManager(VkDevice device)
-        : device_(device)
-        {
-            VkDescriptorPoolSize pool_sizes[] =
-            {
-                { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, kNumDescriptors },
-                { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, kNumDescriptors },
-                { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, kNumDescriptors },
-                { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, kNumDescriptors },
-                { VK_DESCRIPTOR_TYPE_SAMPLER, kNumDescriptors },
-                { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, kNumDescriptors }
-            };
-            
-            VkDescriptorPoolCreateInfo pool_create_info;
-            pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-            pool_create_info.pNext = nullptr;
-            pool_create_info.flags = 0;
-            pool_create_info.maxSets = kMaxSets;
-            pool_create_info.poolSizeCount = sizeof(pool_sizes) / sizeof(VkDescriptorPoolSize);
-            pool_create_info.pPoolSizes = pool_sizes;
-            
-            VkDescriptorPool pool = nullptr;
-            auto res = vkCreateDescriptorPool(device, &pool_create_info, nullptr, &pool);
-            
-            if (res != VK_SUCCESS)
-            {
-                throw std::runtime_error("VkDescriptorManager: Cannot create descriptor pool");
-            }
-            
-            pool_ = VkScopedObject<VkDescriptorPool>(pool,
-                                                     [device](VkDescriptorPool pool)
-                                                     {
-                                                         vkDestroyDescriptorPool(device, pool, nullptr);
-                                                     });
-        }
+        DescriptorManager(VkDevice device);
         
-        auto AllocateDescriptorSets(std::vector<VkDescriptorSetLayout> const& layouts)
-        {
-            std::vector<VkDescriptorSet> descriptor_sets(layouts.size());
-            
-            VkDescriptorSetAllocateInfo allocate_info;
-            allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-            allocate_info.pNext = nullptr;
-            allocate_info.descriptorPool = pool_;
-            allocate_info.descriptorSetCount = (std::uint32_t)layouts.size();
-            allocate_info.pSetLayouts = layouts.data();
-            
-            auto res = vkAllocateDescriptorSets(device_, &allocate_info, descriptor_sets.data());
-            
-            if (res != VK_SUCCESS)
-            {
-                throw std::runtime_error("VkDescriptorManager: Cannot allocate descriptors");
-            }
-            
-            return VkScopedArray<VkDescriptorSet>(descriptor_sets.data(),
-                                                  (std::uint32_t)descriptor_sets.size(),
-                                                  [this](VkDescriptorSet* desctiptor_set, std::uint32_t size)
-                                                  {
-                                                      vkFreeDescriptorSets(device_, pool_, size, desctiptor_set);
-                                                  });
-        }
+        VkScopedObject<VkDescriptorSet> AllocateDescriptorSet(VkDescriptorSetLayout layout);
         
         
     private:

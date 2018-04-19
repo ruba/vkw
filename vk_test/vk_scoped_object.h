@@ -55,66 +55,11 @@ namespace vkw
         
         operator T() { return object_; }
         
+        auto GetObjectPtr() { return &object_; }
+        
     private:
         T object_;
         std::function<void(T)> deleter_;
-    };
-    
-    template <typename T>
-    struct VkScopedArray
-    {
-    public:
-        VkScopedArray()
-        : deleter_(nullptr)
-        {
-        }
-        
-        VkScopedArray(std::nullptr_t)
-        : deleter_(nullptr)
-        {
-        }
-        
-        template <typename F> VkScopedArray(T* objects, std::uint32_t size, F deleter)
-        : objects_(objects, objects + size)
-        , deleter_(deleter)
-        {}
-        
-        VkScopedArray(VkScopedArray&& rhs)
-        : objects_(std::move(rhs.objects_))
-        , deleter_(std::move(rhs.deleter_))
-        {
-            rhs.objects_.clear();
-            rhs.deleter_ = nullptr;
-        }
-        
-        VkScopedArray(VkScopedArray const&) = delete;
-        
-        VkScopedArray& operator=(VkScopedArray&& rhs)
-        {
-            std::swap(objects_, rhs.objects_);
-            std::swap(deleter_, rhs.deleter_);
-            return *this;
-        }
-        
-        VkScopedArray& operator=(VkScopedArray const&) = delete;
-        
-        ~VkScopedArray()
-        {
-            if (!objects_.empty() && deleter_)
-            {
-                deleter_(objects_.data(), (std::uint32_t)objects_.size());
-            }
-        }
-        
-        operator std::vector<T> const& () const { return objects_; }
-        T operator [](int i) const { return objects_[i]; }
-        
-        auto size() const { return objects_.size(); }
-        auto data() const { return objects_.data(); }
-        
-    private:
-        std::vector<T> objects_;
-        std::function<void(T*, std::uint32_t)> deleter_;
     };
 }
 

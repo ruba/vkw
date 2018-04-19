@@ -22,45 +22,38 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include "vk_scoped_object.h"
-#include "vk_shader_manager.h"
-#include "spirv_glsl.hpp"
-
-#include <string>
-#include <vector>
+#include "vk_pipeline_manager.h"
 
 namespace vkw
 {
-    struct ComputePipeline
-    {
-        VkScopedObject<VkPipeline> pipeline;
-        VkScopedObject<VkPipelineLayout> layout;
-    };
-    
-    struct GraphicsPipeline
-    {
-        VkScopedObject<VkPipeline> pipeline;
-        VkScopedObject<VkPipelineLayout> layout;
-    };
-    
-    class PipelineManager
+    using CommandBuffer = VkScopedObject<VkCommandBuffer>;
+    class CommandBufferBuilder
     {
     public:
-        PipelineManager(VkDevice device)
-        : device_(device)
-        {
-        }
+        CommandBufferBuilder(VkDevice device, std::uint32_t queue_family_index);
         
-        // TODO: Add raster stages, depth-stencil, blend etc.
-        GraphicsPipeline CreateGraphicsPipeline(Shader& vs_shader,
-                                                Shader& ps_shader);
+        void BeginCommandBuffer();
         
-        ComputePipeline CreateComputePipeline(Shader& shader,
-                                              std::size_t group_size_x,
-                                              std::size_t group_size_y,
-                                              std::size_t group_size_z);
+        void Dispatch(ComputePipeline& pipeline,
+                      Shader& shader,
+                      std::uint32_t group_size_x,
+                      std::uint32_t group_size_y,
+                      std::uint32_t group_size_z);
+                      //std::uint32_t num_groups_x,
+                      //std::uint32_t num_groups_y,
+                      //std::uint32_t num_groups_z);
+        
+        void Barrier(VkBuffer buffer,
+                     VkAccessFlags src_access,
+                     VkAccessFlags dst_access,
+                     VkPipelineStageFlags src_stage,
+                     VkPipelineStageFlags dst_stage);
+        
+        CommandBuffer EndCommandBuffer();
         
     private:
-        VkDevice device_;
+        VkDevice device_ = VK_NULL_HANDLE;
+        VkCommandBuffer current_command_buffer_ = VK_NULL_HANDLE;
+        VkScopedObject<VkCommandPool> command_pool_ = VK_NULL_HANDLE;
     };
 }
-

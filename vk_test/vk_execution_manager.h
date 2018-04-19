@@ -22,45 +22,25 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include "vk_scoped_object.h"
-#include "vk_shader_manager.h"
-#include "spirv_glsl.hpp"
-
-#include <string>
-#include <vector>
+#include <unordered_map>
+#include <list>
 
 namespace vkw
 {
-    struct ComputePipeline
-    {
-        VkScopedObject<VkPipeline> pipeline;
-        VkScopedObject<VkPipelineLayout> layout;
-    };
-    
-    struct GraphicsPipeline
-    {
-        VkScopedObject<VkPipeline> pipeline;
-        VkScopedObject<VkPipelineLayout> layout;
-    };
-    
-    class PipelineManager
+    class ExecutionManager
     {
     public:
-        PipelineManager(VkDevice device)
+        ExecutionManager(VkDevice device, std::uint32_t queue_family_index)
         : device_(device)
+        , queue_family_index_(queue_family_index)
         {
         }
         
-        // TODO: Add raster stages, depth-stencil, blend etc.
-        GraphicsPipeline CreateGraphicsPipeline(Shader& vs_shader,
-                                                Shader& ps_shader);
-        
-        ComputePipeline CreateComputePipeline(Shader& shader,
-                                              std::size_t group_size_x,
-                                              std::size_t group_size_y,
-                                              std::size_t group_size_z);
+        void Submit(VkCommandBuffer buffer);
+        void WaitIdle();
         
     private:
         VkDevice device_;
+        std::uint32_t queue_family_index_;
     };
 }
-
