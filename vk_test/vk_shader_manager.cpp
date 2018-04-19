@@ -319,8 +319,6 @@ namespace vkw
         
         if (binding_stage_flags == VK_SHADER_STAGE_VERTEX_BIT)
         {
-            spirv_cross::ShaderResources resources = glsl.get_shader_resources();
-            
             shader.vertex_attributes.resize(resources.stage_inputs.size());
             
             uint32_t offset = 0;
