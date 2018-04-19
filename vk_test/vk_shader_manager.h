@@ -41,6 +41,7 @@ namespace vkw
         VkScopedObject<VkShaderModule> module;
         VkScopedArray<VkDescriptorSetLayout> layouts;
         VkScopedArray<VkDescriptorSet> descriptor_sets;
+        std::vector<VkVertexInputAttributeDescription> vertex_attributes;
         std::vector<VkPushConstantRange> push_constant_ranges;
         
         struct Binding
@@ -71,8 +72,8 @@ namespace vkw
         {
         }
         
-        Shader CreateComputeShader(std::string file_name);
-        Shader CreateComputeShader(std::vector<std::uint32_t> const& bytecode);
+        Shader CreateShader(VkShaderStageFlagBits binding_stage_flags, std::string const& file_name);
+        Shader CreateShader(VkShaderStageFlagBits binding_stage_flags, std::vector<std::uint32_t> const& bytecode);
         
     private:
         void CreateShaderModule(VkShaderStageFlags binding_stage_flags,
@@ -88,6 +89,8 @@ namespace vkw
                                      int set_id,
                                      VkShaderStageFlags stage_flags,
                                      std::vector<VkDescriptorSetLayoutBinding>& bindings);
+        
+        static VkFormat BaseTypeToVkFormat(spirv_cross::SPIRType type);
         
         VkDevice device_;
         VkDescriptorManager& descriptor_manager_;

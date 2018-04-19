@@ -6,6 +6,89 @@
 
 namespace vkw
 {
+    VkFormat VkShaderManager::BaseTypeToVkFormat(spirv_cross::SPIRType type)
+    {
+        VkFormat format = VK_FORMAT_UNDEFINED;
+        
+        if (type.basetype == spirv_cross::SPIRType::Float)
+        {
+            switch(type.vecsize)
+            {
+                case 1 :
+                    format = VK_FORMAT_R32_SFLOAT;
+                    break;
+                case 2:
+                    format = VK_FORMAT_R32G32_SFLOAT;
+                    break;
+                case 3:
+                    format = VK_FORMAT_R32G32B32_SFLOAT;
+                    break;
+                case 4:
+                    format = VK_FORMAT_R32G32B32A32_SFLOAT;
+                    break;
+            }
+        }
+        
+        if (type.basetype == spirv_cross::SPIRType::Int)
+        {
+            switch(type.vecsize)
+            {
+                case 1 :
+                    format = VK_FORMAT_R32_SINT;
+                    break;
+                case 2:
+                    format = VK_FORMAT_R32G32_SINT;
+                    break;
+                case 3:
+                    format = VK_FORMAT_R32G32B32_SINT;
+                    break;
+                case 4:
+                    format = VK_FORMAT_R32G32B32A32_SINT;
+                    break;
+            }
+        }
+        
+        if (type.basetype == spirv_cross::SPIRType::UInt)
+        {
+            switch(type.vecsize)
+            {
+                case 1 :
+                    format = VK_FORMAT_R32_UINT;
+                    break;
+                case 2:
+                    format = VK_FORMAT_R32G32_UINT;
+                    break;
+                case 3:
+                    format = VK_FORMAT_R32G32B32_UINT;
+                    break;
+                case 4:
+                    format = VK_FORMAT_R32G32B32A32_UINT;
+                    break;
+            }
+        }
+        
+        if (type.basetype == spirv_cross::SPIRType::Half)
+        {
+            switch(type.vecsize)
+            {
+                case 1 :
+                    format = VK_FORMAT_R16_SFLOAT;
+                    break;
+                case 2:
+                    format = VK_FORMAT_R16G16_SFLOAT;
+                    break;
+                case 3:
+                    format = VK_FORMAT_R16G16B16_SFLOAT;
+                    break;
+                case 4:
+                    format = VK_FORMAT_R16G16B16A16_SFLOAT;
+                    break;
+            }
+        }
+        
+        return format;
+    };
+    
     std::uint32_t VkShaderManager::GetNumDescriptorSets(spirv_cross::CompilerGLSL& glsl)
     {
         // The SPIR-V is now parsed, and we can perform reflection on it.
@@ -234,6 +317,29 @@ namespace vkw
                            });
         }
         
+        if (binding_stage_flags == VK_SHADER_STAGE_VERTEX_BIT)
+        {
+            spirv_cross::ShaderResources resources = glsl.get_shader_resources();
+            
+            shader.vertex_attributes.resize(resources.stage_inputs.size());
+            
+            uint32_t offset = 0;
+            
+            for (auto i = 0; i < resources.stage_inputs.size(); i++)
+            {
+                const spirv_cross::SPIRType type = glsl.get_type(resources.stage_inputs[i].type_id);
+                
+                VkVertexInputAttributeDescription vertex_attribute;
+                vertex_attribute.binding = 0;
+                vertex_attribute.offset = offset;
+                vertex_attribute.format = BaseTypeToVkFormat(type);
+                vertex_attribute.location = i;
+                
+                offset += type.width;
+                
+                shader.vertex_attributes[i] = vertex_attribute;
+            }
+        }
         
         VkShaderModuleCreateInfo module_create_info;
         module_create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -282,22 +388,22 @@ namespace vkw
         return CreateShaderModule(binding_stage_flags, code, shader);
     }
     
-    Shader VkShaderManager::CreateComputeShader(std::string file_name)
+    Shader VkShaderManager::CreateShader(VkShaderStageFlagBits binding_stage_flags, std::string const& file_name)
     {
         Shader shader;
         
-        CreateShaderModule(VK_SHADER_STAGE_COMPUTE_BIT, file_name, shader);
+        CreateShaderModule(binding_stage_flags, file_name, shader);
         
         shader.descriptor_sets = descriptor_manager_.AllocateDescriptorSets(shader.layouts);
         
         return shader;
     }
     
-    Shader VkShaderManager::CreateComputeShader(std::vector<std::uint32_t> const& bytecode)
+    Shader VkShaderManager::CreateShader(VkShaderStageFlagBits binding_stage_flags, std::vector<std::uint32_t> const& bytecode)
     {
         Shader shader;
         
-        CreateShaderModule(VK_SHADER_STAGE_COMPUTE_BIT, bytecode, shader);
+        CreateShaderModule(binding_stage_flags, bytecode, shader);
         
         shader.descriptor_sets = descriptor_manager_.AllocateDescriptorSets(shader.layouts);
         

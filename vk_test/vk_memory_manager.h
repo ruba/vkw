@@ -50,8 +50,9 @@ namespace vkw
                         VkDeviceSize size,
                         void* data);
         
-        VkScopedObject<VkImage> CreateImage();
-        
+        VkScopedObject<VkImage> CreateImage(VkExtent3D size,
+                                            VkFormat format,
+                                            VkImageUsageFlags usage);
         
     private:
         static void CopyToHostVisibleBlock(VkDevice device,
@@ -81,6 +82,8 @@ namespace vkw
         VkScopedObject<VkCommandPool> command_pool_;
         
         std::unordered_map<VkBuffer, VkMemoryAllocator::StorageBlock> buffer_bindings_;
+        std::unordered_map<VkImage, VkMemoryAllocator::StorageBlock> image_bindings_;
+        
         std::list<VkScopedObject<VkBuffer>> staging_buffer_pool_;
     };
 }

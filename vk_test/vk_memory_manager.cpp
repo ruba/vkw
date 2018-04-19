@@ -278,6 +278,70 @@ namespace vkw
         return VkScopedObject<VkBuffer>(buffer, deleter);
     }
     
+    VkScopedObject<VkImage> VkMemoryManager::CreateImage(VkExtent3D size,
+                                                         VkFormat format,
+                                                         VkImageUsageFlags usage)
+    {
+        VkImageType image_type = VK_IMAGE_TYPE_1D;
+        image_type = size.width > 1 && size.height > 1 ? VK_IMAGE_TYPE_2D : image_type;
+        image_type = size.width > 1 && size.height > 1 && size.depth > 1 ? VK_IMAGE_TYPE_3D : image_type;
+        
+        VkImageCreateInfo image_create_info;
+        image_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        image_create_info.imageType = image_type;
+        image_create_info.format = format;
+        image_create_info.extent.width = size.width;
+        image_create_info.extent.height = size.height;
+        image_create_info.extent.depth = size.width;
+        image_create_info.mipLevels = 1;
+        image_create_info.arrayLayers = 1;
+        image_create_info.samples = VK_SAMPLE_COUNT_1_BIT;
+        image_create_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+        image_create_info.usage = usage;
+        
+        VkImage image = nullptr;
+        auto res = vkCreateImage(device_, &image_create_info, nullptr, &image);
+        
+        if (res != VK_SUCCESS)
+        {
+            throw std::runtime_error("VkMemoryManager: Cannot create Vulkan image");
+        }
+        
+        VkMemoryRequirements mem_reqs;
+        vkGetImageMemoryRequirements(device_, image, &mem_reqs);
+        
+        auto storage_block = allocator_.allocate(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                                                 mem_reqs.size,
+                                                 mem_reqs.alignment);
+        
+        res = vkBindImageMemory(device_,
+                                image,
+                                storage_block.memory,
+                                0);
+        
+        if (res != VK_SUCCESS)
+        {
+            throw std::runtime_error("VkMemoryManager: Cannot bind image memory");
+        }
+        
+        image_bindings_[image] = storage_block;
+        
+        auto deleter = [this](VkImage image)
+        {
+            auto iter = image_bindings_.find(image);
+            
+            vkDestroyImage(device_, image, nullptr);
+            
+            if (iter != image_bindings_.cend())
+            {
+                allocator_.deallocate(iter->second);
+                image_bindings_.erase(iter);
+            }
+        };
+        
+        return VkScopedObject<VkImage>(image, deleter);
+    }
+    
     void VkMemoryManager::GetStagingBufferAndBlock(VkDeviceSize size,
                                                    VkBuffer& buffer,
                                                    VkMemoryAllocator::StorageBlock& block)
