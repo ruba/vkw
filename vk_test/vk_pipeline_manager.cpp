@@ -203,6 +203,7 @@ namespace vkw
         pipeline_create_info.pStages = stages;
         pipeline_create_info.stageCount = 2;
         pipeline_create_info.renderPass = render_pass;
+        pipeline_create_info.subpass = 0;
         
         VkVertexInputBindingDescription vertex_input_bindings;
         vertex_input_bindings.binding = 0;

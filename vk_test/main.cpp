@@ -162,8 +162,9 @@ int main(int argc, const char * argv[])
                                             VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT);
     
     std::vector<RenderTargetCreateInfo> attachments = {
-        {window_width, window_height, VK_FORMAT_R16G16B16A16_SFLOAT, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT}, // albedo
-        {window_width, window_height, VK_FORMAT_R16G16B16A16_SFLOAT, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT}  // normals
+        {window_width, window_height, VK_FORMAT_R16G16B16A16_UINT, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT},
+        {window_width, window_height, VK_FORMAT_R16G16B16A16_SFLOAT, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT},
+        {window_width, window_height, VK_FORMAT_R16G16B16A16_SFLOAT, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT}
     };
     
     RenderTarget render_target = render_target_manager.CreateRenderTarget(attachments);
@@ -176,9 +177,9 @@ int main(int argc, const char * argv[])
     auto shader = shader_manager.CreateShader(VK_SHADER_STAGE_COMPUTE_BIT, "add.comp.spv");
     auto pipeline = pipeline_manager.CreateComputePipeline(shader, 64u, 1u, 1u);
     
-    //auto shader_vs = shader_manager.CreateShader(VK_SHADER_STAGE_VERTEX_BIT, "vs_shader.vs.spv");
-    //auto shader_ps = shader_manager.CreateShader(VK_SHADER_STAGE_FRAGMENT_BIT, "ps_shader.vs.spv");
-    //auto graphics_pipeline = pipeline_manager.CreateGraphicsPipeline(shader_vs, shader_ps);
+    auto shader_vs = shader_manager.CreateShader(VK_SHADER_STAGE_VERTEX_BIT, "mrt.vert.spv");
+    auto shader_ps = shader_manager.CreateShader(VK_SHADER_STAGE_FRAGMENT_BIT, "mrt.frag.spv");
+    auto graphics_pipeline = pipeline_manager.CreateGraphicsPipeline(shader_vs, shader_ps, render_target.render_pass);
     
     std::vector<int> fake_data{1, 2, 3, 4, 5};
     auto buffer_a = memory_manager.CreateBuffer(fake_data.size() * sizeof(int),
