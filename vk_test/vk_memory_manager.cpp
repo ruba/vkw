@@ -286,7 +286,7 @@ namespace vkw
         image_type = size.width > 1 && size.height > 1 ? VK_IMAGE_TYPE_2D : image_type;
         image_type = size.width > 1 && size.height > 1 && size.depth > 1 ? VK_IMAGE_TYPE_3D : image_type;
         
-        VkImageCreateInfo image_create_info;
+        VkImageCreateInfo image_create_info = {};
         image_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
         image_create_info.imageType = image_type;
         image_create_info.format = format;
